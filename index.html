@@ -1,0 +1,864 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Entraînement de Flexibilité Cognitive</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .container {
+            background: rgba(255, 255, 255, 0.98);
+            border-radius: 25px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            max-width: 700px;
+            width: 100%;
+            animation: slideIn 0.5s ease;
+        }
+        
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 2.5em;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        .subtitle {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 1.1em;
+        }
+        
+        .hidden {
+            display: none !important;
+        }
+        
+        .difficulty-selector {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-bottom: 25px;
+        }
+        
+        .difficulty-btn {
+            padding: 10px 20px;
+            border: 2px solid #667eea;
+            background: white;
+            color: #667eea;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        
+        .difficulty-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+        
+        .difficulty-btn.active {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+        }
+        
+        .rules {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 25px;
+            text-align: left;
+            border: 2px solid #dee2e6;
+        }
+        
+        .rule-item {
+            padding: 8px 0;
+            font-weight: bold;
+            color: #555;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .current-rule {
+            background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            font-size: 1.4em;
+            font-weight: bold;
+            margin-bottom: 25px;
+            box-shadow: 0 8px 20px rgba(238, 90, 36, 0.4);
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+        }
+        
+        .cards-counter {
+            background: linear-gradient(45deg, #a29bfe, #6c5ce7);
+            color: white;
+            padding: 15px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            font-size: 1.5em;
+            font-weight: bold;
+            box-shadow: 0 5px 15px rgba(108, 92, 231, 0.3);
+        }
+        
+        .timer-combo-container {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            gap: 15px;
+        }
+        
+        .timer, .combo, .errors {
+            flex: 1;
+            background: linear-gradient(45deg, #74b9ff, #0984e3);
+            color: white;
+            padding: 15px;
+            border-radius: 12px;
+            font-size: 1.2em;
+            font-weight: bold;
+            box-shadow: 0 5px 15px rgba(9, 132, 227, 0.3);
+        }
+        
+        .combo {
+            background: linear-gradient(45deg, #fdcb6e, #e17055);
+        }
+        
+        .errors {
+            background: linear-gradient(45deg, #e17055, #d63031);
+        }
+        
+        .timer-value, .combo-value, .error-value {
+            font-size: 1.5em;
+            display: block;
+            margin-top: 5px;
+        }
+        
+        .shape-container {
+            width: 180px;
+            height: 180px;
+            margin: 25px auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #f0f0f0 0%, #e0e0e0 100%);
+            border-radius: 20px;
+            box-shadow: inset 0 5px 15px rgba(0, 0, 0, 0.15);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .shape-container::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.3) 0%, transparent 70%);
+            animation: shine 3s infinite;
+        }
+        
+        @keyframes shine {
+            0%, 100% { transform: translate(-50%, -50%); }
+            50% { transform: translate(-30%, -30%); }
+        }
+        
+        .shape {
+            transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            position: relative;
+            z-index: 1;
+        }
+        
+        .circle {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+        }
+        
+        .square {
+            width: 120px;
+            height: 120px;
+            border-radius: 10px;
+        }
+        
+        .black { 
+            background-color: #2c3e50;
+            box-shadow: 0 5px 20px rgba(44, 62, 80, 0.5);
+        }
+        
+        .white { 
+            background-color: #ecf0f1; 
+            border: 4px solid #34495e;
+            box-shadow: 0 5px 20px rgba(52, 73, 94, 0.3);
+        }
+        
+        .buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin: 25px 0;
+        }
+        
+        button {
+            background: linear-gradient(45deg, #74b9ff, #0984e3);
+            color: white;
+            border: none;
+            padding: 18px 30px;
+            border-radius: 12px;
+            font-size: 1.2em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(9, 132, 227, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        button::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+        
+        button:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+        
+        button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(9, 132, 227, 0.4);
+        }
+        
+        button:active {
+            transform: translateY(0);
+        }
+        
+        .key-hint {
+            font-size: 0.75em;
+            opacity: 0.8;
+            display: block;
+            margin-top: 5px;
+        }
+        
+        .feedback {
+            height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3em;
+            font-weight: bold;
+            border-radius: 12px;
+            margin: 20px 0;
+            transition: all 0.3s ease;
+        }
+        
+        .correct {
+            background: linear-gradient(45deg, #00b894, #00cec9);
+            color: white;
+            animation: celebrate 0.5s ease;
+        }
+        
+        .incorrect {
+            background: linear-gradient(45deg, #e17055, #d63031);
+            color: white;
+            animation: shake 0.5s ease;
+        }
+        
+        @keyframes celebrate {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+        
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin-top: 30px;
+        }
+        
+        .stat-card {
+            background: linear-gradient(45deg, #a29bfe, #6c5ce7);
+            color: white;
+            padding: 18px;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(108, 92, 231, 0.3);
+            transition: transform 0.3s ease;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .stat-value {
+            font-size: 2.2em;
+            font-weight: bold;
+            display: block;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+        
+        .stat-label {
+            font-size: 0.9em;
+            opacity: 0.95;
+            margin-top: 5px;
+        }
+        
+        .control-buttons {
+            margin-top: 30px;
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .control-btn {
+            background: linear-gradient(45deg, #636e72, #2d3436);
+            padding: 14px 25px;
+            font-size: 1em;
+            flex: 1;
+            min-width: 150px;
+        }
+        
+        .start-button {
+            background: linear-gradient(45deg, #4caf50, #45a049);
+            color: white;
+            border: none;
+            padding: 20px 50px;
+            border-radius: 50px;
+            font-size: 1.5em;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 20px;
+            box-shadow: 0 10px 30px rgba(76, 175, 80, 0.4);
+            transition: all 0.3s ease;
+            animation: bounce 2s infinite;
+        }
+        
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        .start-button:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 15px 40px rgba(76, 175, 80, 0.5);
+            animation: none;
+        }
+        
+        .best-score {
+            background: linear-gradient(45deg, #ffeaa7, #fdcb6e);
+            color: #2d3436;
+            padding: 10px 20px;
+            border-radius: 10px;
+            margin-top: 15px;
+            font-weight: bold;
+            box-shadow: 0 3px 10px rgba(253, 203, 110, 0.4);
+        }
+        
+        .instructions {
+            background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+            padding: 25px;
+            border-radius: 15px;
+            margin: 20px 0;
+            text-align: left;
+            border: 2px solid #90caf9;
+        }
+        
+        .instructions h3 {
+            color: #1976d2;
+            margin-top: 0;
+            font-size: 1.3em;
+        }
+        
+        .instructions ul {
+            padding-left: 20px;
+            line-height: 1.8;
+        }
+        
+        .instructions li {
+            margin-bottom: 10px;
+            color: #424242;
+        }
+        
+        @media (max-width: 700px) {
+            .container {
+                padding: 25px;
+                margin: 10px;
+            }
+            
+            h1 {
+                font-size: 2em;
+            }
+            
+            .buttons {
+                grid-template-columns: 1fr;
+            }
+            
+            .stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .timer-combo-container {
+                flex-direction: column;
+            }
+            
+            .control-buttons {
+                flex-direction: column;
+            }
+            
+            .control-btn {
+                min-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🧠 Entraînement de Flexibilité Cognitive</h1>
+        <div class="subtitle">Améliorez votre adaptabilité mentale !</div>
+        
+        <!-- Écran de démarrage -->
+        <div id="startScreen">
+            <div class="instructions">
+                <h3>📋 Comment jouer ?</h3>
+                <ul>
+                    <li>🔷 Suivez la <strong>règle affichée</strong> en haut de l'écran</li>
+                    <li>👀 Observez la <strong>forme et la couleur</strong> qui apparaissent</li>
+                    <li>⚡ Répondez <strong>le plus vite possible</strong> en cliquant ou avec le clavier</li>
+                    <li>🔄 La règle change <strong>aléatoirement</strong> à chaque tour</li>
+                    <li>🎯 Maintenez votre <strong>concentration</strong> et adaptez-vous rapidement !</li>
+                    <li>🎴 Complétez <strong>50 cartes</strong> pour terminer l'entraînement</li>
+                </ul>
+            </div>
+            
+            <div class="difficulty-selector">
+                <button class="difficulty-btn active" id="btnStartEasy">😊 Facile</button>
+                <button class="difficulty-btn" id="btnStartMedium">🎯 Moyen</button>
+                <button class="difficulty-btn" id="btnStartHard">🔥 Difficile</button>
+            </div>
+            
+            <button class="start-button" id="startBtn">🚀 Commencer l'entraînement</button>
+        </div>
+        
+        <!-- Écran de jeu -->
+        <div id="gameScreen" class="hidden">
+            <div class="difficulty-selector">
+                <button class="difficulty-btn" id="gameEasy">😊 Facile</button>
+                <button class="difficulty-btn" id="gameMedium">🎯 Moyen</button>
+                <button class="difficulty-btn" id="gameHard">🔥 Difficile</button>
+            </div>
+            
+            <div class="rules">
+                <div class="rule-item">🔷 Règle 1 : Nommer la forme (rond/carré)</div>
+                <div class="rule-item">🎨 Règle 2 : Nommer la couleur (noir/blanc)</div>
+                <div class="rule-item">🔄 Règle 3 : Nommer la forme opposée</div>
+                <div class="rule-item">🔄 Règle 4 : Nommer la couleur opposée</div>
+            </div>
+            
+            <div class="current-rule" id="currentRule">
+                Règle 1 : Nommez la forme
+            </div>
+            
+            <div class="cards-counter">
+                🎴 <span id="cardsRemaining">50</span> / 50 cartes
+            </div>
+            
+            <div class="timer-combo-container">
+                <div class="timer">
+                    ⏱️ Temps de réaction
+                    <span class="timer-value" id="reactionTime">0.00s</span>
+                </div>
+                <div class="combo">
+                    🔥 Combo
+                    <span class="combo-value" id="comboCount">0</span>
+                </div>
+                <div class="errors">
+                    ❌ Erreurs
+                    <span class="error-value" id="errorCount">0</span>
+                </div>
+            </div>
+            
+            <div class="shape-container">
+                <div class="shape circle black" id="shape"></div>
+            </div>
+            
+            <div class="buttons">
+                <button id="btnCircle">
+                    ROND
+                    <span class="key-hint">Touche : R ou 1</span>
+                </button>
+                <button id="btnSquare">
+                    CARRÉ
+                    <span class="key-hint">Touche : C ou 2</span>
+                </button>
+                <button id="btnBlack">
+                    NOIR
+                    <span class="key-hint">Touche : N ou 3</span>
+                </button>
+                <button id="btnWhite">
+                    BLANC
+                    <span class="key-hint">Touche : B ou 4</span>
+                </button>
+            </div>
+            
+            <div class="feedback" id="feedback"></div>
+            
+            <div class="stats">
+                <div class="stat-card">
+                    <span class="stat-value" id="correct">0</span>
+                    <div class="stat-label">✅ Correctes</div>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-value" id="total">0</span>
+                    <div class="stat-label">📊 Total</div>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-value" id="accuracy">0%</span>
+                    <div class="stat-label">🎯 Précision</div>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-value" id="avgTime">0.0s</span>
+                    <div class="stat-label">⚡ Temps moy.</div>
+                </div>
+            </div>
+            
+            <div class="best-score" id="bestScore">
+                🏆 Meilleur score : 0% | 🎯 Record combo : 0
+            </div>
+            
+            <div class="control-buttons">
+                <button class="control-btn" id="btnReset">🔄 Recommencer</button>
+                <button class="control-btn" id="btnNext">⏭️ Suivant</button>
+                <button class="control-btn" id="btnMenu">🏠 Menu</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentRule = 1;
+        let currentShape = 'circle';
+        let currentColor = 'black';
+        let correctAnswers = 0;
+        let totalAnswers = 0;
+        let comboCount = 0;
+        let errorCount = 0;
+        let bestCombo = 0;
+        let difficulty = 'facile';
+        let startTime = Date.now();
+        let reactionTimes = [];
+        let bestAccuracy = 0;
+        let gameStarted = false;
+        const MAX_CARDS = 50;
+        let cardsRemaining = MAX_CARDS;
+        
+        const rules = {
+            1: { text: "Règle 1 : Nommez la forme", type: "shape" },
+            2: { text: "Règle 2 : Nommez la couleur", type: "color" },
+            3: { text: "Règle 3 : Nommez la forme opposée", type: "opposite-shape" },
+            4: { text: "Règle 4 : Nommez la couleur opposée", type: "opposite-color" }
+        };
+        
+        const difficultySettings = {
+            facile: { delay: 1500, rulesPool: [1, 2] },
+            moyen: { delay: 1200, rulesPool: [1, 2, 3, 4] },
+            difficile: { delay: 800, rulesPool: [1, 2, 3, 4] }
+        };
+        
+        function startGame() {
+            document.getElementById('startScreen').classList.add('hidden');
+            document.getElementById('gameScreen').classList.remove('hidden');
+            gameStarted = true;
+            startTime = Date.now();
+            
+            updateDifficultyButtons();
+            resetGame();
+        }
+        
+        function updateDifficultyButtons() {
+            document.querySelectorAll('#gameScreen .difficulty-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            if (difficulty === 'facile') {
+                document.getElementById('gameEasy').classList.add('active');
+            } else if (difficulty === 'moyen') {
+                document.getElementById('gameMedium').classList.add('active');
+            } else if (difficulty === 'difficile') {
+                document.getElementById('gameHard').classList.add('active');
+            }
+        }
+        
+        function backToMenu() {
+            document.getElementById('startScreen').classList.remove('hidden');
+            document.getElementById('gameScreen').classList.add('hidden');
+            gameStarted = false;
+            startTime = Date.now();
+        }
+        
+        function selectDifficultyStart(level) {
+            difficulty = level;
+            document.querySelectorAll('#startScreen .difficulty-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            if (level === 'facile') {
+                document.getElementById('btnStartEasy').classList.add('active');
+            } else if (level === 'moyen') {
+                document.getElementById('btnStartMedium').classList.add('active');
+            } else if (level === 'difficile') {
+                document.getElementById('btnStartHard').classList.add('active');
+            }
+        }
+        
+        function setDifficulty(level) {
+            difficulty = level;
+            updateDifficultyButtons();
+            resetGame();
+        }
+        
+        function generateRandomShape() {
+            const shapes = ['circle', 'square'];
+            const colors = ['black', 'white'];
+            
+            currentShape = shapes[Math.floor(Math.random() * shapes.length)];
+            currentColor = colors[Math.floor(Math.random() * colors.length)];
+            
+            const shapeElement = document.getElementById('shape');
+            shapeElement.className = `shape ${currentShape} ${currentColor}`;
+            
+            const rulesPool = difficultySettings[difficulty].rulesPool;
+            currentRule = rulesPool[Math.floor(Math.random() * rulesPool.length)];
+            document.getElementById('currentRule').textContent = rules[currentRule].text;
+            
+            startTime = Date.now();
+            
+            // Restaurer l'état normal
+            document.querySelector('.shape-container').style.opacity = '1';
+            document.querySelectorAll('button:not(.difficulty-btn):not(.control-btn)').forEach(btn => {
+                btn.style.opacity = '1';
+                btn.style.pointerEvents = 'auto';
+            });
+            
+            const feedbackEl = document.getElementById('feedback');
+            feedbackEl.style.fontSize = '1.3em';
+            feedbackEl.style.height = '70px';
+        }
+        
+        function updateReactionTime() {
+            if (!gameStarted) {
+                document.getElementById('reactionTime').textContent = '0.00s';
+                return;
+            }
+            const elapsed = ((Date.now() - startTime) / 1000).toFixed(2);
+            document.getElementById('reactionTime').textContent = elapsed + 's';
+        }
+        
+        setInterval(updateReactionTime, 50);
+        
+        function getCorrectAnswer() {
+            switch(rules[currentRule].type) {
+                case 'shape':
+                    return currentShape === 'circle' ? 'rond' : 'carré';
+                case 'color':
+                    return currentColor === 'black' ? 'noir' : 'blanc';
+                case 'opposite-shape':
+                    return currentShape === 'circle' ? 'carré' : 'rond';
+                case 'opposite-color':
+                    return currentColor === 'black' ? 'blanc' : 'noir';
+            }
+        }
+        
+        function answer(userAnswer) {
+            if (!gameStarted || cardsRemaining <= 0) return;
+            
+            const correctAnswer = getCorrectAnswer();
+            const feedbackEl = document.getElementById('feedback');
+            const reactionTime = (Date.now() - startTime) / 1000;
+            
+            totalAnswers++;
+            cardsRemaining--;
+            
+            if (userAnswer === correctAnswer) {
+                correctAnswers++;
+                comboCount++;
+                if (comboCount > bestCombo) {
+                    bestCombo = comboCount;
+                }
+                reactionTimes.push(reactionTime);
+                
+                feedbackEl.textContent = `✅ Correct ! (${reactionTime.toFixed(2)}s)`;
+                feedbackEl.className = 'feedback correct';
+            } else {
+                errorCount++;
+                feedbackEl.textContent = `❌ Incorrect. La bonne réponse était : ${correctAnswer}`;
+                feedbackEl.className = 'feedback incorrect';
+            }
+            
+            updateStats();
+            
+            if (cardsRemaining <= 0) {
+                setTimeout(() => {
+                    endGame();
+                }, difficultySettings[difficulty].delay);
+            } else {
+                setTimeout(() => {
+                    nextShape();
+                }, difficultySettings[difficulty].delay);
+            }
+        }
+        
+        function nextShape() {
+            generateRandomShape();
+            document.getElementById('feedback').textContent = '';
+            document.getElementById('feedback').className = 'feedback';
+        }
+        
+        function updateStats() {
+            document.getElementById('correct').textContent = correctAnswers;
+            document.getElementById('total').textContent = totalAnswers;
+            document.getElementById('accuracy').textContent = 
+                totalAnswers > 0 ? Math.round((correctAnswers / totalAnswers) * 100) + '%' : '0%';
+            document.getElementById('comboCount').textContent = comboCount;
+            document.getElementById('errorCount').textContent = errorCount;
+            document.getElementById('cardsRemaining').textContent = cardsRemaining;
+            
+            const avgTime = reactionTimes.length > 0 
+                ? (reactionTimes.reduce((a, b) => a + b, 0) / reactionTimes.length).toFixed(1) 
+                : '0.0';
+            document.getElementById('avgTime').textContent = avgTime + 's';
+            
+            const accuracy = totalAnswers > 0 ? Math.round((correctAnswers / totalAnswers) * 100) : 0;
+            if (accuracy > bestAccuracy) {
+                bestAccuracy = accuracy;
+            }
+            document.getElementById('bestScore').textContent = 
+                `🏆 Meilleur score : ${bestAccuracy}% | 🎯 Record combo : ${bestCombo}`;
+        }
+        
+        function resetGame() {
+            correctAnswers = 0;
+            totalAnswers = 0;
+            comboCount = 0;
+            errorCount = 0;
+            cardsRemaining = MAX_CARDS;
+            reactionTimes = [];
+            updateStats();
+            nextShape();
+        }
+        
+        function endGame() {
+            gameStarted = false;
+            const accuracy = totalAnswers > 0 ? Math.round((correctAnswers / totalAnswers) * 100) : 0;
+            
+            const feedbackEl = document.getElementById('feedback');
+            feedbackEl.innerHTML = `🎉<br>Entraînement terminé !<br>Score : ${accuracy}%`;
+            feedbackEl.className = 'feedback correct';
+            feedbackEl.style.fontSize = '1.5em';
+            feedbackEl.style.height = '120px';
+            
+            document.querySelector('.shape-container').style.opacity = '0.3';
+            document.querySelectorAll('button:not(.difficulty-btn):not(.control-btn)').forEach(btn => {
+                btn.style.opacity = '0.5';
+                btn.style.pointerEvents = 'none';
+            });
+        }
+        
+        // Event listeners
+        document.getElementById('startBtn').addEventListener('click', startGame);
+        document.getElementById('btnMenu').addEventListener('click', backToMenu);
+        document.getElementById('btnReset').addEventListener('click', startGame);
+        document.getElementById('btnNext').addEventListener('click', nextShape);
+        
+        document.getElementById('btnStartEasy').addEventListener('click', () => selectDifficultyStart('facile'));
+        document.getElementById('btnStartMedium').addEventListener('click', () => selectDifficultyStart('moyen'));
+        document.getElementById('btnStartHard').addEventListener('click', () => selectDifficultyStart('difficile'));
+        
+        document.getElementById('gameEasy').addEventListener('click', () => setDifficulty('facile'));
+        document.getElementById('gameMedium').addEventListener('click', () => setDifficulty('moyen'));
+        document.getElementById('gameHard').addEventListener('click', () => setDifficulty('difficile'));
+        
+        document.getElementById('btnCircle').addEventListener('click', () => answer('rond'));
+        document.getElementById('btnSquare').addEventListener('click', () => answer('carré'));
+        document.getElementById('btnBlack').addEventListener('click', () => answer('noir'));
+        document.getElementById('btnWhite').addEventListener('click', () => answer('blanc'));
+        
+        // Gestion du clavier
+        document.addEventListener('keydown', function(e) {
+            if (!gameStarted) return;
+            if (document.getElementById('feedback').textContent !== '') return;
+            
+            switch(e.key.toLowerCase()) {
+                case '1':
+                case 'r':
+                    answer('rond');
+                    break;
+                case '2':
+                case 'c':
+                    answer('carré');
+                    break;
+                case '3':
+                case 'n':
+                    answer('noir');
+                    break;
+                case '4':
+                case 'b':
+                    answer('blanc');
+                    break;
+                case ' ':
+                    e.preventDefault();
+                    nextShape();
+                    break;
+                case 'enter':
+                    e.preventDefault();
+                    resetGame();
+                    break;
+            }
+        });
+    </script>
+</body>
+</html>
